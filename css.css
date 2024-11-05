@@ -1,0 +1,92 @@
+h1{
+    font-family: "Agdasima", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    text-align: left;
+    background: linear-gradient(90deg, rgb(40, 69, 82) 0%, #abad7b 100%);
+    border-radius: 12px;
+    padding: 10px;
+    font-size: 60px;
+    color: white;
+    word-spacing: 5px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    
+  }
+  #buttonA {
+    list-style: none;
+    border-radius: 4px;
+    background-color: #9b9b9b;
+    border: none;
+    color: #ff0000;
+    text-align: center;
+    font-size: 32px;
+    padding: 16px;
+    width: 220px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 36px;
+    box-shadow: 0 10px 20px -8px rgba(0, 0, 0,.7);
+    
+  }
+
+  #mainText{
+    background-color: #666666;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    background-clip: text;
+    color: white;
+    text-shadow: 5px 4px 3px rgba(0,0,0,0.3);
+    text-shadow: horizontal-offset vertical-offset blur color;
+  }
+  
+  #buttonA{
+    list-style: none;
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+  }
+
+  #buttonA:after {
+    content: '»';
+    position: absolute;
+    opacity: 0;  
+    top: 14px;
+    right: -20px;
+    transition: 0.5s;
+  }
+  
+  #buttonA:hover{
+    padding-right: 24px;
+    padding-left:8px;
+    background-color: #00000036;
+    color: #ffffff;
+  }
+  
+  #buttonA:hover:after {
+    
+    opacity: 1;
+    right: 10px;
+  }
+  #reklam{
+    cursor: pointer;
+    list-style: none;
+    color: white;
+  }
+  #reklam:hover{
+    transition: 0.5s;
+    color: #ffffff3f;
+  }
+
+  #underContents{
+    background-color: #666666;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    background-clip: text;
+    color: white;
+    text-shadow: 5px 4px 3px rgba(0,0,0,0.3);
+    text-shadow: horizontal-offset vertical-offset blur color;
+  }
+body{
+    background: linear-gradient(90deg, #a52424 0%, #50504f 100%);
+}
