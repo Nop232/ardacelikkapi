@@ -1,0 +1,225 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
+* { 
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+:root {
+    --primary_bg: white;
+    --color: #273746;
+    --accent: #3498DB;
+}
+
+.dark {
+    transition: background-color 0.5s ease;
+    --primary_bg: #273746;
+    --color: #fff;
+    --accent: #3498DB;
+}
+
+body {
+    transition: background-color 0.5s ease;
+    background: var(--primary_bg);
+    color: var(--color);
+}
+
+.container {
+    max-width: 1440px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+header { 
+    padding: 1rem 0;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+}
+
+header h2{
+    padding-left: 0.6rem;
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--color);
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.navbar ul{ 
+    display: flex;
+    align-items: center;
+    list-style: none;
+    flex-wrap: wrap;
+}
+
+.navbar ul li {
+    margin: 0 1rem;
+}
+
+.navbar ul li a{
+    text-decoration: none;
+    color: var(--color);
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.navbar ul li a:hover {
+    background: var(--accent);
+    color: var(--primary_bg);
+    transform: translateY(-2px);
+}
+
+/* Username display sağa hizalamak için */
+#usernameDisplay {
+    margin-left: auto;
+    font-weight: 600;
+    color: var(--color);
+    padding: 0.5rem 1rem;
+}
+
+/* Showcase */
+.showcase { 
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    min-height: 80vh;
+    align-items: center;
+    gap: 2rem;
+}
+
+.showcase img{
+    display: block;
+    object-fit: cover;
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.showcase h2{
+    font-size: 6rem;
+    font-weight: 800;
+    color: var(--color);
+    letter-spacing: 4px;
+    line-height: 6rem;
+}
+
+.showcase p{
+    font-size: 1.2rem;
+    padding: 2rem 0;
+    line-height: 2.5rem;
+    color: var(--color);
+}
+
+.showcase button {
+    display: inline-block;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.6rem 2rem;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    background: var(--accent);
+    color: var(--primary_bg);
+    font-weight: 600;
+    transition: 0.3s;
+}
+.showcase button:hover {
+    opacity: 0.85;
+    transform: translateY(-2px);
+}
+
+.below_content {
+    display: flex;
+    align-items: center;
+}
+
+.below_content i {
+    background-color: var(--accent);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.6rem;
+    margin: 0 0.5rem;
+    color: var(--primary_bg);
+    width: 40px;
+    align-items: center;
+    border-radius: 10%;
+    transition: 0.3s;
+}
+
+.below_content i:hover {
+    opacity: 0.8;
+}
+
+/* 📱 Responsive Tasarım */
+@media (max-width: 1024px) {
+    .showcase h2 {
+        font-size: 4rem;
+        line-height: 4.5rem;
+    }
+
+    .showcase {
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    .showcase {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding: 2rem 0;
+    }
+
+    .showcase h2 {
+        font-size: 3rem;
+        line-height: 3.5rem;
+    }
+
+    .showcase p {
+        font-size: 1rem;
+        line-height: 1.8rem;
+    }
+
+    .showcase img {
+        margin-top: 1rem;
+        max-height: 350px;
+    }
+}
+
+@media (max-width: 480px) {
+    header h2 {
+        font-size: 1.5rem;
+    }
+
+    .navbar ul li {
+        margin: 0 0.5rem;
+    }
+
+    .showcase h2 {
+        font-size: 2rem;
+        line-height: 2.5rem;
+    }
+
+    .showcase p {
+        font-size: 0.9rem;
+    }
+
+    .showcase button {
+        padding: 0.5rem 1.5rem;
+        font-size: 0.8rem;
+    }
+}
+

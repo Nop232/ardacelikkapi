@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Arda Çelik Kapı</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='prepage.css'>
+</head>
+<body>
+
+
+
+
+
+
+
+    
+    <script>
+        const bodyEl = document.querySelector('body');
+const moonIcon = document.getElementById("fa-moon");
+
+// Sayfa yüklendiğinde localStorage kontrolü
+if(localStorage.getItem('darkMode') === 'true') {
+    bodyEl.classList.add('dark');
+}
+
+// Dark mode toggle
+moonIcon.addEventListener('click', () => {
+    bodyEl.classList.toggle('dark');
+    // durumu kaydet
+    localStorage.setItem('darkMode', bodyEl.classList.contains('dark'));
+});
+
+    </script>
+</body>
+</html>

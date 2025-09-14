@@ -1,22 +1,79 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>Menu</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Arda Çelik Kapı</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='prepage.css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
-    <div class="top-container" style="text-align: center;">
-        <h1>Merhabalar, nasılsınız efendim?</h1>
+<body class="dark">
+    <section>
+        
+    </section>
+    <!--Header start-->
+    <header>
+        <div class="container">
+            <div class="navbar">
+                <div class="logo-text">
+                    <h2>Arda Çelik Kapı</h2>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#">Sepetim</a></li>
+                        <li><a href="contact.html">İletişim</a></li>
+                        <li><a href="#">Hesap Ayarları</a></li>
+                        <li id="usernameDisplay"></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <!--Header close-->
 
-        <h1>Your name</h1>
-        <p id="usernameDisplay"></p>
-        <h1>Your Email</h1>
-        <p id="emailDisplay"></p>
-        <h1>Your Role</h1>
-        <p id="userRole"></p>
-    </div>
+    <!--Showcase-->
+    <main>
+        <div class="container">
+            <div class="showcase">
+                <div class="left_side_content">
+                    <h2>Hoşgeldin <span id="showUsername">Kullanıcı</span></h2>
+                    <p>Artık kapıların dünyasına giriş yaptığına göre birbirinden güzel, birbirinden çeşitli kapılara bakmaya hazır ol! alttaki butona basarak kapılarımıza göz atabilirsin.</p>
+                    <button type="button" onclick="">Kapılara Göz At...</button>
+                </div>
+                <div class="right_side_content">
+                    <img src="Images/welcome.gif" alt="">
+                </div>
+
+                <!--down side-->
+                <div class="below_content">
+                    <div class="dark-mode">
+                        <i id="fa-moon" class="fa-solid fa-moon"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!--Showcase Close-->
+
+
+
+    <script>
+       const bodyEl = document.querySelector('body');
+const moonIcon = document.getElementById("fa-moon");
+
+// Sayfa yüklendiğinde localStorage kontrolü
+if(localStorage.getItem('darkMode') === 'true') {
+    bodyEl.classList.add('dark');
+}
+
+// Dark mode toggle
+moonIcon.addEventListener('click', () => {
+    bodyEl.classList.toggle('dark');
+    // durumu kaydet
+    localStorage.setItem('darkMode', bodyEl.classList.contains('dark'));
+});
+</script>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
@@ -38,25 +95,32 @@
         const db = getFirestore(app);
 
         onAuthStateChanged(auth, async (user) => {
-            if(user){
-                const docRef = doc(db, "users", user.uid);
-                const docSnap = await getDoc(docRef);
+    if(user){
+        const docRef = doc(db, "users", user.uid);
+        const docSnap = await getDoc(docRef);
 
-                if(docSnap.exists()){
-                    const userData = docSnap.data();
+        if(docSnap.exists()){
+            const userData = docSnap.data();
 
-                    document.getElementById("usernameDisplay").innerText = userData.username || "Unknown";
-                    document.getElementById("emailDisplay").innerText = userData.email || "Unknown";
-                    document.getElementById("userRole").innerText = userData.role || "Unknown";
-                } else {
-                    console.log("Firestore'da kullanıcı bilgisi yok!");
-                }
-            } else {
-                console.log("Kullanıcı giriş yapmamış!");
-                // istersen giriş sayfasına yönlendir
-                // window.location.href = "index.html";
+            // Navbar
+            document.getElementById("usernameDisplay").innerText = userData.username || "Unknown";
+
+            // Showcase
+            const showUsername = document.getElementById("showUsername");
+            if(showUsername){
+                showUsername.innerText = userData.username || "Kullanıcı";
             }
-        });
+        } else {
+            console.log("Firestore'da kullanıcı bilgisi yok!");
+        }
+    } else {
+        console.log("Kullanıcı giriş yapmamış!");
+        // window.location.href = "index.html";
+    }
+});
+
     </script>
+    
 </body>
 </html>
+
