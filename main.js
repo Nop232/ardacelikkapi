@@ -1,7 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
-
 
 // Firebase config
 const firebaseConfig = {
@@ -14,66 +13,27 @@ const firebaseConfig = {
     measurementId: "G-YRFLQJW6EP"
 };
 
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// ----------------- TRANSLATIONS -----------------
-const translations = { 
-    en: {
-        toptext: "Login",
-        toptextregister: "Register",
-        emailtext: "Email",
-        passwordtext: "Password",
-        passwordagaintext: "Password Again",
-        remembertext: "Remember me",
-        forgettext: "Forget Password?",
-        loginbutton: "Login",
-        registerbutton: "Register",
-        dontaccount: "Don't have an account?",
-        register: "Register",
-        orlogin: "Login",
-        username: "Username",
-    },
-    tr: {
-        toptext: "Giriş Yap",
-        toptextregister: "Kayıt Ol",
-        emailtext: "Email",
-        passwordtext: "Şifre",
-        passwordagaintext: "Şifre Tekrar",
-        remembertext: "Beni Hatırla",
-        forgettext: "Şifremi Unuttum",
-        loginbutton: "Giriş Yap",
-        registerbutton: "Kayıt Ol",
-        dontaccount: "Hesabın yokmu?",
-        register: "Kayıt Ol",
-        orlogin: "Giriş yap",
-        username: "Kullanıcı isimi",
-    }
-};
+// 🔹 Firebase hata kodlarını Türkçe'ye çeviren fonksiyon
+function getErrorMessage(errorCode) {
+    const errors = {
+        "auth/email-already-in-use": "Bu e-posta adresi zaten kullanımda.",
+        "auth/invalid-email": "Geçersiz e-posta adresi.",
+        "auth/weak-password": "Şifre çok zayıf (en az 6 karakter olmalı).",
+        "auth/user-not-found": "Kullanıcı bulunamadı.",
+        "auth/wrong-password": "Hatalı şifre girdiniz.",
+        "auth/missing-password": "Lütfen bir şifre girin.",
+        "auth/too-many-requests": "Çok fazla deneme yapıldı, lütfen daha sonra tekrar deneyin.",
+    };
 
-// ----------------- LANGUAGE SWITCHER -----------------
-const languageSelectop = document.querySelector("#languageSelect");
-const setLanguage = (lang) => {
-    if(document.getElementById("toptext")) document.getElementById("toptext").innerText = translations[lang].toptext;
-    if(document.getElementById("toptextregister")) document.getElementById("toptextregister").innerText = translations[lang].toptextregister;
-    if(document.getElementById("emailtext")) document.getElementById("emailtext").innerText = translations[lang].emailtext;
-    if(document.getElementById("passwordtext")) document.getElementById("passwordtext").innerText = translations[lang].passwordtext;
-    if(document.getElementById("passwordagaintext")) document.getElementById("passwordagaintext").innerText = translations[lang].passwordagaintext;
-    if(document.getElementById("remembertext")) document.getElementById("remembertext").innerText = translations[lang].remembertext;
-    if(document.getElementById("forgettext")) document.getElementById("forgettext").innerText = translations[lang].forgettext;
-    if(document.getElementById("loginbutton")) document.getElementById("loginbutton").innerText = translations[lang].loginbutton;
-    if(document.getElementById("registerbutton")) document.getElementById("registerbutton").innerText = translations[lang].registerbutton;
-    if(document.getElementById("dontaccount")) document.getElementById("dontaccount").querySelector("span").innerText = translations[lang].dontaccount;
-    if(document.getElementById("register")) document.getElementById("register").innerText = translations[lang].register;
-    if(document.getElementById("orlogin")) document.getElementById("orlogin").innerText = translations[lang].orlogin;
-    if(document.getElementById("username")) document.getElementById("username").innerText = translations[lang].username;
-};
-if(languageSelectop){
-    languageSelectop.addEventListener("change", (e) => setLanguage(e.target.value));
+    return errors[errorCode] || "Bilinmeyen bir hata oluştu: " + errorCode;
 }
-setLanguage("tr");
+
 
 // ----------------- REGISTER -----------------
 const registerForm = document.querySelector("#registerForm");
@@ -87,7 +47,7 @@ if(registerForm){
         const username = document.getElementById("username").value;
 
         if(password !== passwordAgain){
-            alert("Passwords do not match!");
+            alert("Şifreler eşleşmiyor!");
             return;
         }
 
@@ -104,17 +64,16 @@ if(registerForm){
 
             // E-posta doğrulama gönder
             await sendEmailVerification(user);
-            alert("Registration successful! Please check your email to verify your account.");
+            alert("Kayıt başarılı! Lütfen e-posta adresinizi doğrulayın.");
 
             window.location.href = "index.html";
         } catch(error) {
-            alert(error.message);
+            alert(getErrorMessage(error.code)); // ✅ Türkçe hata mesajı
         }
     });
 }
 
-
-// LOGIN
+// ----------------- LOGIN -----------------
 const loginForm = document.querySelector("#loginForm");
 const rememberCheckbox = document.getElementById("remember");
 
@@ -159,9 +118,7 @@ if(loginForm){
                     sessionStorage.setItem("role", userData.role);
                 }
 
-                const lang = languageSelectop.value;
-                const message = lang === "en" ? "Login successful" : "Giriş başarılı";
-                document.getElementById("succesful-or-not-text").innerText = message;
+                document.getElementById("succesful-or-not-text").innerText = "Giriş başarılı";
 
                 setTimeout(() => {
                     window.location.href = "menu.html";
@@ -171,16 +128,15 @@ if(loginForm){
             }
 
         } catch(error) {
-            alert(error.message);
+            alert(getErrorMessage(error.code)); // ✅ Türkçe hata mesajı
         }
     });
 }
 
 
-import { sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-
-// Forgot Password formunu yakala
+// ----------------- PASSWORD RESET -----------------
 const resetForm = document.querySelector("#passwordforgotForm");
+
 if(resetForm){
     resetForm.addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -188,13 +144,12 @@ if(resetForm){
 
         try {
             await sendPasswordResetEmail(auth, email);
-            alert("Şifre sıfırlama linki email adresine gönderildi!");
+            alert("Şifre sıfırlama linki e-posta adresine gönderildi!");
             window.location.href = "index.html"; // Başarıyla gönderildikten sonra login sayfasına yönlendir
         } catch (error) {
-            alert(error.message);
+            alert(getErrorMessage(error.code)); // ✅ Türkçe hata mesajı
         }
     });
 }
-
 
 
