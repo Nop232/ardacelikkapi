@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Menu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <div class="top-container" style="text-align: center;">
+        <h1>Merhabalar, nasılsınız efendim?</h1>
+
+        <h1>Your name</h1>
+        <p id="usernameDisplay"></p>
+        <h1>Your Email</h1>
+        <p id="emailDisplay"></p>
+        <h1>Your Role</h1>
+        <p id="userRole"></p>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDw1ibYg2xGcbF1azF09JUSYMnfhQDySHg",
+            authDomain: "ardacelikkapi-adcfb.firebaseapp.com",
+            projectId: "ardacelikkapi-adcfb",
+            storageBucket: "ardacelikkapi-adcfb.firebasestorage.app",
+            messagingSenderId: "436173086063",
+            appId: "1:436173086063:web:45b125b911b4a168a8dc9a",
+            measurementId: "G-YRFLQJW6EP"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        onAuthStateChanged(auth, async (user) => {
+            if(user){
+                const docRef = doc(db, "users", user.uid);
+                const docSnap = await getDoc(docRef);
+
+                if(docSnap.exists()){
+                    const userData = docSnap.data();
+
+                    document.getElementById("usernameDisplay").innerText = userData.username || "Unknown";
+                    document.getElementById("emailDisplay").innerText = userData.email || "Unknown";
+                    document.getElementById("userRole").innerText = userData.role || "Unknown";
+                } else {
+                    console.log("Firestore'da kullanıcı bilgisi yok!");
+                }
+            } else {
+                console.log("Kullanıcı giriş yapmamış!");
+                // istersen giriş sayfasına yönlendir
+                // window.location.href = "index.html";
+            }
+        });
+    </script>
+</body>
+</html>
