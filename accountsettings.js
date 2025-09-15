@@ -1,89 +1,91 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hesap Ayarları - Arda Çelik Kapı</title>
-    <link rel="stylesheet" href="prepage.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
-    <header>
-        <div class="container">
-            <div class="navbar">
-                <div class="logo-text">
-                    <h2>Arda Çelik Kapı</h2>
-                </div>
-                <nav>
-                    <ul>
-                        <li><a href="contact.html">İletişim</a></li>
-                        <li><a href="menu.html">Ana Sayfa</a></li>
-                        <li><a href="accountsettings.html">Hesap Ayarları</a></li>
-                        <li id="usernameDisplay">Kullanıcı</li>
-                        <div class="below_content">
-                            <div class="dark-mode">
-                                <i id="fa-moon" class="fa-solid fa-moon"></i>
-                            </div>
-                        </div>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-    </header>
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+import { getAuth, onAuthStateChanged, updateEmail, updatePassword, sendEmailVerification, signOut } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
-    <main>
-        <section>
-            <div class="container account-settings">
-            <h2>Hesap Ayarları</h2>
+const firebaseConfig = {
+    apiKey: "AIzaSyDw1ibYg2xGcbF1azF09JUSYMnfhQDySHg",
+    authDomain: "ardacelikkapi-adcfb.firebaseapp.com",
+    projectId: "ardacelikkapi-adcfb",
+    storageBucket: "ardacelikkapi-adcfb.firebasestorage.app",
+    messagingSenderId: "436173086063",
+    appId: "1:436173086063:web:45b125b911b4a168a8dc9a",
+    measurementId: "G-YRFLQJW6EP"
+};
 
-            <div class="form-box">
-                <label for="username">Kullanıcı Adı:</label>
-                <input type="text" id="username" placeholder="Yeni kullanıcı adı">
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-                <label for="email">E-posta:</label>
-                <input type="email" id="email" placeholder="Yeni e-posta">
+const usernameInput = document.getElementById("username");
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+const updateBtn = document.getElementById("updateBtn");
+const statusMsg = document.getElementById("statusMsg");
+const usernameDisplay = document.getElementById("usernameDisplay");
 
-                <label for="email">Yeni Şifre:</label>
-                <input type="password" id="password" placeholder="Yeni Şifre">
+onAuthStateChanged(auth, async (user) => {
+    if(!user){
+        window.location.href = "index.html"; // giriş yoksa ana sayfaya at
+        return;
+    }
 
-
-                <button id="updateBtn">Güncelle</button>
-                <button id="quitBtn">Hesaptan Çıkış Yap</button>
-            </div>
-
-            <div id="statusMsg"></div>
-        </div>
-        
-    </main>
-        </section>
-        
-
-    <footer>
-    <div class="container">
-        <p>© 2025 Arda Çelik Kapı | Tüm hakları saklıdır.</p>
-        <p>Bu web sitesi <a href="https://spaceship.com" target="_blank">SpaceShip</a> üzerinden alınan alan adı ile yayınlanmaktadır.</p>
-    </div>
-    </footer>
-
-    <script src="accountsettings.js" type="module"></script>
-    <script>
-        
-       const bodyEl = document.querySelector('body');
-const moonIcon = document.getElementById("fa-moon");
-
-// Sayfa yüklendiğinde localStorage kontrolü
-if(localStorage.getItem('darkMode') === 'true') {
-    bodyEl.classList.add('dark');
-}
-
-// Dark mode toggle
-moonIcon.addEventListener('click', () => {
-    bodyEl.classList.toggle('dark');
-    // durumu kaydet
-    localStorage.setItem('darkMode', bodyEl.classList.contains('dark'));
+    // Firestore'dan kullanıcı verilerini çek
+    const docRef = doc(db, "users", user.uid);
+    const docSnap = await getDoc(docRef);
+    if(docSnap.exists()){
+        const userData = docSnap.data();
+        usernameInput.value = userData.username || "";
+        emailInput.value = user.email || "";
+        usernameDisplay.innerText = userData.username || "Kullanıcı";
+    }
 });
 
+updateBtn.addEventListener("click", async () => {
+    const user = auth.currentUser;
+    if(!user) return;
 
-    </script>
-</body>
-</html>
+    const newUsername = usernameInput.value.trim();
+    const newEmail = emailInput.value.trim();
+    const newPassword = passwordInput.value.trim();
+
+    const docRef = doc(db, "users", user.uid);
+
+    try {
+        // Firestore kullanıcı adını güncelle
+        await updateDoc(docRef, { username: newUsername });
+
+        // E-posta güncelle
+        if(newEmail && newEmail !== user.email){
+            await updateEmail(user, newEmail);
+            await sendEmailVerification(user); // yeni email’e doğrulama maili gönder
+            statusMsg.style.color = "orange";
+            statusMsg.innerText = "Yeni email adresine doğrulama maili gönderildi. Lütfen onaylayın.";
+        }
+
+        // Şifre güncelle
+        if(newPassword){
+            await updatePassword(user, newPassword);
+        }
+
+        statusMsg.style.color = "green";
+        statusMsg.innerText = "Hesap bilgileri başarıyla güncellendi!";
+        usernameDisplay.innerText = newUsername;
+
+    } catch(error){
+        statusMsg.style.color = "red";
+        statusMsg.innerText = "Hata: " + error.message;
+    }
+});
+
+// Hesaptan çıkış butonunu seç
+const quitBtn = document.getElementById("quitBtn");
+
+quitBtn.addEventListener("click", () => {
+    signOut(auth).then(() => {
+        // Çıkış başarılı
+        alert("Hesaptan çıkış yapıldı!");
+        window.location.href = "index.html"; // çıkınca anasayfaya yönlendir
+    }).catch((error) => {
+        alert("Hata: " + error.message);
+    });
+});
