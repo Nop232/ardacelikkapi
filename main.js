@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 // Firebase config
@@ -33,6 +33,14 @@ function getErrorMessage(errorCode) {
 
     return errors[errorCode] || "Bilinmeyen bir hata oluştu: " + errorCode;
 }
+
+
+onAuthStateChanged(auth, (user) => {
+    if(user){
+        // Firebase’de giriş yapılmış
+        window.location.href = "menu.html";
+    }
+});
 
 
 // ----------------- REGISTER -----------------
