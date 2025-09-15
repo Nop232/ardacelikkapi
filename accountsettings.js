@@ -54,14 +54,6 @@ updateBtn.addEventListener("click", async () => {
         // Firestore kullanıcı adını güncelle
         await updateDoc(docRef, { username: newUsername });
 
-        // E-posta güncelle
-        if(newEmail && newEmail !== user.email){
-            await updateEmail(user, newEmail);
-            await sendEmailVerification(user); // yeni email’e doğrulama maili gönder
-            statusMsg.style.color = "orange";
-            statusMsg.innerText = "Yeni email adresine doğrulama maili gönderildi. Lütfen onaylayın.";
-        }
-
         // Şifre güncelle
         if(newPassword){
             await updatePassword(user, newPassword);
