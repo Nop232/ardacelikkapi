@@ -223,7 +223,7 @@ footer a:hover {
         gap: 0.8rem;
     }
 
-    navbar ul {
+    .navbar ul {
         flex-direction: column; /* alt alta diz */
         align-items: center;    /* ortalasın */
         gap: 0.5rem;
