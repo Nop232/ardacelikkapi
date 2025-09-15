@@ -53,20 +53,13 @@
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 <script type="module" src="main.js"></script>
 <script>
-       const bodyEl = document.querySelector('body');
+const bodyEl = document.querySelector('body');
 const moonIcon = document.getElementById("fa-moon");
 
 // Sayfa yüklendiğinde localStorage kontrolü
 if(localStorage.getItem('darkMode') === 'true') {
     bodyEl.classList.add('dark');
 }
-
-// Dark mode toggle
-moonIcon.addEventListener('click', () => {
-    bodyEl.classList.toggle('dark');
-    // durumu kaydet
-    localStorage.setItem('darkMode', bodyEl.classList.contains('dark'));
-});
 
     </script>
 </body>
