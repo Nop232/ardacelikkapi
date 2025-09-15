@@ -41,7 +41,7 @@
             <button type="submit" id="loginbutton">Giriş Yap</button>
 
             <div class="succesful-or-not">
-                <p id="succesful-or-not-text" class="succesful-or-not-text"></p>
+                <p style="color: white;" id="succesful-or-not-text" class="succesful-or-not-text"></p>
             </div>
 
             <div class="register-link">
@@ -60,23 +60,14 @@
 <script type="module" src="main.js"></script>
 <script>
 
-    
 
-       const bodyEl = document.querySelector('body');
+const bodyEl = document.querySelector('body');
 const moonIcon = document.getElementById("fa-moon");
 
 // Sayfa yüklendiğinde localStorage kontrolü
 if(localStorage.getItem('darkMode') === 'true') {
     bodyEl.classList.add('dark');
 }
-
-// Dark mode toggle
-moonIcon.addEventListener('click', () => {
-    bodyEl.classList.toggle('dark');
-    // durumu kaydet
-    localStorage.setItem('darkMode', bodyEl.classList.contains('dark'));
-});
-
     </script>
 </body>
 </html>
