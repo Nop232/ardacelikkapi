@@ -48,7 +48,7 @@
                 <button type="button" id="moreInfoBtn">Daha fazla bilgi...</button>
             </div>
             <div class="right_side_content">
-                <img src="Images/door_image.jpg" alt="">
+                <img style="border: 4px solid #3498DB;" src="Images/door_image.jpg" alt="">
             </div>
 
             <!--down side-->
@@ -78,6 +78,8 @@
 
     <script>
 
+        
+
         // Daha fazla bilgi scroll
 const moreInfoBtn = document.getElementById("moreInfoBtn");
 const infoSection = document.getElementById("infoSection");
@@ -85,7 +87,6 @@ const infoSection = document.getElementById("infoSection");
 moreInfoBtn.addEventListener("click", () => {
     infoSection.scrollIntoView({ behavior: "smooth" });
 });
-
 
         
 
@@ -104,6 +105,8 @@ moonIcon.addEventListener('click', () => {
     // durumu kaydet
     localStorage.setItem('darkMode', bodyEl.classList.contains('dark'));
 });
+
+
 
 
     </script>
