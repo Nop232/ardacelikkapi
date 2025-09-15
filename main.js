@@ -143,7 +143,7 @@ if(loginForm){
             msg = "Geçersiz e-mail formatı!";
             break;
         case "auth/invalid-credential":
-            msg = "Geçersiz kimlik bilgisi!";
+            msg = "Geçersiz kimlik bilgisi! Şifre veya Email adresin hatalı.";
             break;
         default:
             msg = "Bilinmeyen bir hata oluştu: " + error.code;
