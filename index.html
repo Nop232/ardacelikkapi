@@ -24,6 +24,12 @@
                         <li><a href="contact.html">İletişim</a></li>
                         <li><a href="login.html">Giriş Yap</a></li>
                         <li><a href="register.html">Kayıt Ol</a></li>
+                        <!--down side-->
+                <div class="below_content">
+                    <div class="dark-mode">
+                        <i id="fa-moon" class="fa-solid fa-moon"></i>
+                    </div>
+                </div>
                     </ul>
                 </nav>
             </div>
@@ -33,30 +39,54 @@
 
     <!--Showcase-->
     <main>
-        <div class="container">
-            <div class="showcase">
-                <div class="left_side_content">
-                    <h2>Hakkımızda</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio, iste harum dolores aspernatur sint, quod totam, perspiciatis velit ipsa quasi inventore ducimus architecto enim eaque est expedita molestias accusantium veniam?</p>
-                    <button type="button">Daha fazla bilgi...</button>
-                </div>
-                <div class="right_side_content">
-                    <img src="Images/door_image.jpg" alt="">
-                </div>
-
-                <!--down side-->
-                <div class="below_content">
-                    <div class="dark-mode">
-                        <i id="fa-moon" class="fa-solid fa-moon"></i>
-                    </div>
-                </div>
+    <div class="container">
+        <div class="showcase">
+            <div class="left_side_content">
+                <h2>Hakkımızda</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio, iste harum dolores aspernatur sint, quod totam, perspiciatis velit ipsa quasi inventore ducimus architecto enim eaque est expedita molestias accusantium veniam?</p>
+                
+                <!-- Buton -->
+                <button type="button" id="moreInfoBtn">Daha fazla bilgi...</button>
             </div>
+            <div class="right_side_content">
+                <img src="Images/door_image.jpg" alt="">
+            </div>
+
+            <!--down side-->
         </div>
-    </main>
-    <!--Showcase Close-->
+    </div>
+</main>
+
+<!-- Bilgi bölümü -->
+<section id="infoSection" style="padding: 200px 0; text-align: center;">
+    <div class="container">
+        <h2>Daha Fazla Bilgi</h2>
+        <p style="margin-bottom: 40px; margin-top: 20px;">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. A obcaecati quis consequuntur minima harum animi ad est in eaque cupiditate, incidunt quia aliquam architecto. Vero nulla distinctio consequuntur facere nemo.
+        </p>
+    </div>
+
+</section>
+
+
+    <footer>
+    <div class="container">
+        <p>© 2025 Arda Çelik Kapı | Tüm hakları saklıdır.</p>
+        <p>Bu web sitesi <a href="https://spaceship.com" target="_blank">SpaceShip</a> üzerinden alınan alan adı ile yayınlanmaktadır.</p>
+    </div>
+    </footer>
 
 
     <script>
+
+        // Daha fazla bilgi scroll
+const moreInfoBtn = document.getElementById("moreInfoBtn");
+const infoSection = document.getElementById("infoSection");
+
+moreInfoBtn.addEventListener("click", () => {
+    infoSection.scrollIntoView({ behavior: "smooth" });
+});
+
 
         
 
@@ -75,6 +105,7 @@ moonIcon.addEventListener('click', () => {
     // durumu kaydet
     localStorage.setItem('darkMode', bodyEl.classList.contains('dark'));
 });
+
 
     </script>
 </body>
