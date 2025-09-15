@@ -20,10 +20,17 @@
     --accent: #3498DB;
 }
 
+html, body {
+    height: 100%;
+}
+
 body {
     transition: background-color 0.5s ease;
     background: var(--primary_bg);
     color: var(--color);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 .container {
@@ -35,7 +42,7 @@ body {
 
 header { 
     padding: 1rem 0;
-    box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 header h2{
@@ -80,6 +87,7 @@ header h2{
 
 /* Username display sağa hizalamak için */
 #usernameDisplay {
+    margin: 0 1rem;
     margin-left: auto;
     font-weight: 600;
     color: var(--color);
@@ -159,6 +167,30 @@ header h2{
     opacity: 0.8;
 }
 
+footer {
+    padding: 1.5rem 0;
+    text-align: center;
+    background: var(--accent);
+    color: var(--primary_bg);
+}
+
+main {
+    flex: 1; /* içerik büyür, footer hep alta itilir */
+}
+
+footer a {
+    color: var(--primary_bg);
+    text-decoration: underline;
+    transition: 0.3s;
+}
+
+footer a:hover {
+    opacity: 0.8;
+}
+
+
+
+
 /* 📱 Responsive Tasarım */
 @media (max-width: 1024px) {
     .showcase h2 {
@@ -175,6 +207,23 @@ header h2{
     .navbar {
         flex-direction: column;
         gap: 0.8rem;
+    }
+
+    navbar ul {
+        flex-direction: column; /* alt alta diz */
+        align-items: center;    /* ortalasın */
+        gap: 0.5rem;
+        padding: 0;
+    }
+
+    .navbar ul li {
+        margin: 0.5rem 0;
+    }
+
+    /* dark mode icon'un da alt alta gelsin ve ortalansın */
+    .below_content {
+        justify-content: center;
+        margin-top: 0.5rem;
     }
 
     .showcase {
@@ -222,4 +271,6 @@ header h2{
         font-size: 0.8rem;
     }
 }
+
+
 
