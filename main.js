@@ -105,6 +105,8 @@ if(loginForm){
                     return;
                 }
 
+                
+
                 // remember işareti kontrolü
                 if(rememberCheckbox.checked){
                     // kullanıcıyı kalıcı sakla
@@ -128,8 +130,26 @@ if(loginForm){
             }
 
         } catch(error) {
-            alert(getErrorMessage(error.code)); // ✅ Türkçe hata mesajı
-        }
+    // Türkçe mesaj
+    let msg = "";
+    switch(error.code){
+        case "auth/wrong-password":
+            msg = "Şifre yanlış!";
+            break;
+        case "auth/user-not-found":
+            msg = "Bu e-mail ile kayıtlı kullanıcı bulunamadı!";
+            break;
+        case "auth/invalid-email":
+            msg = "Geçersiz e-mail formatı!";
+            break;
+        case "auth/invalid-credential":
+            msg = "Geçersiz kimlik bilgisi!";
+            break;
+        default:
+            msg = "Bilinmeyen bir hata oluştu: " + error.code;
+    }
+    alert(msg);
+}
     });
 }
 
