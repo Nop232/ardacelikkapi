@@ -117,6 +117,58 @@ header h2{
     gap: 2rem;
 }
 
+.account-settings {
+    padding: 3rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.account-settings h2 {
+    margin-bottom: 2rem;
+    font-size: 2rem;
+}
+
+.form-box {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 400px;
+    gap: 1rem;
+}
+
+.form-box label {
+    font-weight: 500;
+}
+
+.form-box input {
+    padding: 0.8rem;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+
+.form-box button {
+    padding: 0.8rem;
+    background: var(--accent);
+    color: white;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.form-box button:hover {
+    background: #217dbb;
+}
+
+#statusMsg {
+    margin-top: 1rem;
+    font-weight: 600;
+    text-align: center;
+    color: green;
+}
+
 .showcase img{
     display: block;
     object-fit: cover;
