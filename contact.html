@@ -6,18 +6,67 @@
     <title>Arda Çelik Kapı</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='prepage.css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <section>
+        
+    </section>
+    <!--Header start-->
+    <header>
+        <div class="container">
+            <div class="navbar">
+                <div class="logo-text">
+                    <h2>Arda Çelik Kapı</h2>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#">Sepetim</a></li>
+                        <li><a href="contact.html">İletişim</a></li>
+                        <li><a href="menu.html">Ana Sayfa</a></li>
+                        <li><a href="#">Hesap Ayarları</a></li>
+                        <li id="usernameDisplay"></li>
+                        <div class="below_content">
+                        <div class="dark-mode">
+                            <i id="fa-moon" class="fa-solid fa-moon"></i>
+                        </div>
+                </div>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <!--Header close-->
+
+    <!--Showcase-->
+    <main>
+        <div class="container">
+            <div class="showcase">
+                <div class="left_side_content">
+                    <h2>Her sıkıntınızda yanınızdayız. İşte iletişim bilgilerimiz</h2>
+                    <div class="contect-contain" style="margin-top: 20px;">
+                    <li style="list-style: none;">Telefon Numaramız: <a id="tel" href="tel:+905059738723">0505 973 87 23</a></li>
+                    <li style="list-style: none;">Facebook Adresimiz: Arda Çelik Kapı</li>
+                    </div>
+                </div>
+
+                
+            </div>
+        </div>
+    </main>
+    <!--Showcase Close-->
+
+    <footer>
+    <div class="container">
+        <p>© 2025 Arda Çelik Kapı | Tüm hakları saklıdır.</p>
+        <p>Bu web sitesi <a href="https://spaceship.com" target="_blank">SpaceShip</a> üzerinden alınan alan adı ile yayınlanmaktadır.</p>
+    </div>
+    </footer>
 
 
 
-
-
-
-
-    
     <script>
-        const bodyEl = document.querySelector('body');
+       const bodyEl = document.querySelector('body');
 const moonIcon = document.getElementById("fa-moon");
 
 // Sayfa yüklendiğinde localStorage kontrolü
@@ -31,7 +80,54 @@ moonIcon.addEventListener('click', () => {
     // durumu kaydet
     localStorage.setItem('darkMode', bodyEl.classList.contains('dark'));
 });
+</script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDw1ibYg2xGcbF1azF09JUSYMnfhQDySHg",
+            authDomain: "ardacelikkapi-adcfb.firebaseapp.com",
+            projectId: "ardacelikkapi-adcfb",
+            storageBucket: "ardacelikkapi-adcfb.firebasestorage.app",
+            messagingSenderId: "436173086063",
+            appId: "1:436173086063:web:45b125b911b4a168a8dc9a",
+            measurementId: "G-YRFLQJW6EP"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        onAuthStateChanged(auth, async (user) => {
+    if(user){
+        const docRef = doc(db, "users", user.uid);
+        const docSnap = await getDoc(docRef);
+
+        if(docSnap.exists()){
+            const userData = docSnap.data();
+
+            // Navbar
+            document.getElementById("usernameDisplay").innerText = userData.username || "Unknown";
+
+            // Showcase
+            const showUsername = document.getElementById("showUsername");
+            if(showUsername){
+                showUsername.innerText = userData.username || "Kullanıcı";
+            }
+        } else {
+            console.log("Firestore'da kullanıcı bilgisi yok!");
+        }
+    } else {
+        console.log("Kullanıcı giriş yapmamış!");
+        // window.location.href = "index.html";
+    }
+});
 
     </script>
+    
 </body>
 </html>
+
