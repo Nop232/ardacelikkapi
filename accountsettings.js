@@ -1,6 +1,20 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-import { getAuth, onAuthStateChanged, updateEmail, updatePassword, sendEmailVerification, signOut } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+import { 
+  getAuth, 
+  onAuthStateChanged, 
+  updateEmail, 
+  updatePassword, 
+  sendEmailVerification, 
+  signOut 
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+import { 
+  getFirestore, 
+  doc, 
+  getDoc, 
+  updateDoc, 
+  deleteField 
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
 
 const firebaseConfig = {
     apiKey: "AIzaSyDw1ibYg2xGcbF1azF09JUSYMnfhQDySHg",
@@ -25,20 +39,46 @@ const usernameDisplay = document.getElementById("usernameDisplay");
 
 onAuthStateChanged(auth, async (user) => {
     if(!user){
-        window.location.href = "index.html"; // giriş yoksa ana sayfaya at
+        window.location.href = "index.html"; 
         return;
     }
 
-    // Firestore'dan kullanıcı verilerini çek
     const docRef = doc(db, "users", user.uid);
     const docSnap = await getDoc(docRef);
+
     if(docSnap.exists()){
-        const userData = docSnap.data();
-        usernameInput.value = userData.username || "";
+        const data = docSnap.data();
+
+        // Kullanıcının mevcut bilgilerini inputlara doldur
+        usernameInput.value = data.username || "";
         emailInput.value = user.email || "";
-        usernameDisplay.innerText = userData.username || "Kullanıcı";
+        usernameDisplay.innerText = data.username || "Kullanıcı";
+
+        // Eğer email onaylandıysa ve bekleyen değişiklik varsa uygula
+        await user.reload();
+        if(user.emailVerified && data.pendingChanges){
+            const changes = data.pendingChanges;
+
+            if(changes.username){
+                await updateDoc(docRef, { username: changes.username });
+                usernameDisplay.innerText = changes.username;
+            }
+            if(changes.email && changes.email !== user.email){
+                await updateEmail(user, changes.email);
+            }
+            if(changes.password){
+                await updatePassword(user, changes.password);
+            }
+
+            await updateDoc(docRef, { pendingChanges: deleteField() });
+
+            statusMsg.style.color = "green";
+            statusMsg.innerText = "Değişiklikler onaylandı ve uygulandı!";
+        }
     }
 });
+
+
 
 updateBtn.addEventListener("click", async () => {
     const user = auth.currentUser;
@@ -51,32 +91,26 @@ updateBtn.addEventListener("click", async () => {
     const docRef = doc(db, "users", user.uid);
 
     try {
-        // Firestore kullanıcı adını güncelle
-        await updateDoc(docRef, { username: newUsername });
+        // Pending değişiklikleri kaydet
+        await updateDoc(docRef, {
+            pendingChanges: {
+                username: newUsername || null,
+                email: newEmail || null,
+                password: newPassword || null
+            }
+        });
 
-        // E-posta güncelle
-        if(newEmail && newEmail !== user.email){
-            await updateEmail(user, newEmail);
-            await sendEmailVerification(user); // yeni email’e doğrulama maili gönder
-            statusMsg.style.color = "orange";
-            statusMsg.innerText = "Yeni email adresine doğrulama maili gönderildi. Lütfen onaylayın.";
-        }
+        // Doğrulama maili gönder
+        await sendEmailVerification(user);
 
-        // Şifre güncelle
-        if(newPassword){
-            await updatePassword(user, newPassword);
-        }
-
-        statusMsg.style.color = "green";
-        statusMsg.innerText = "Hesap bilgileri başarıyla güncellendi!";
-        usernameDisplay.innerText = newUsername;
+        statusMsg.style.color = "orange";
+        statusMsg.innerText = "E-postana onay linki gönderildi. Onayladıktan sonra değişikliklerin uygulanacak. (Sayfayı yenilemeyi unutmayın.)";
 
     } catch(error){
         statusMsg.style.color = "red";
         statusMsg.innerText = "Hata: " + error.message;
     }
 });
-
 // Hesaptan çıkış butonunu seç
 const quitBtn = document.getElementById("quitBtn");
 
