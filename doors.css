@@ -1,0 +1,69 @@
+.page-title {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-top: 2rem;
+  color: var(--color);
+}
+
+.page-desc {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--color);
+  font-size: 1.1rem;
+}
+
+.doors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.door-card {
+  background: var(--primary_bg);
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  text-align: center;
+  padding: 1rem;
+  transition: 0.3s;
+}
+
+.door-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.door-card img {
+  width: 100%;
+  border-radius: 10px;
+  height: 250px;
+  object-fit: cover;
+}
+
+.door-card h3 {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  color: var(--color);
+}
+
+.price {
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #27ae60;
+}
+
+.door-card button {
+  padding: 0.6rem 1.5rem;
+  border: none;
+  border-radius: 50px;
+  background: var(--accent);
+  color: var(--primary_bg);
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.door-card button:hover {
+  opacity: 0.9;
+  transform: scale(1.05);
+}

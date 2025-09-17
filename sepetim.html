@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sepetim - Arda Çelik Kapı</title>
+  <link rel="stylesheet" href="prepage.css" />
+  <link rel="stylesheet" href="cart.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <!-- header (aynı header'ı tekrar kullanabilirsin) -->
+  <header>
+    <div class="container">
+      <div class="navbar">
+        <div class="logo-text"><h2>Arda Çelik Kapı</h2></div>
+        <nav>
+          <ul>
+            <li><a href="contact.html">İletişim</a></li>
+            <li><a href="menu.html">Ana Sayfa</a></li>
+            <li><a href="doors.html">Kapılar</a></li>
+            <li id="usernameDisplay">Kullanıcı</li>
+            <div class="below_content">
+              <div class="dark-mode"><i id="fa-moon" class="fa-solid fa-moon"></i></div>
+            </div>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container cart-wrap">
+      <h2>Sepetim</h2>
+
+      <div class="cart-grid">
+        <div class="cart-items">
+          <div id="itemsList">
+            <!-- JS ile ürün kartları buraya eklenecek -->
+          </div>
+        </div>
+
+        <aside class="cart-summary">
+          <h3>Özet</h3>
+          <p>Ürünler: <span id="summaryCount">0</span></p>
+          <p>Toplam: <strong id="summaryTotal">₺0</strong></p>
+
+          <label for="address">Teslimat Adresi</label>
+          <textarea id="address" rows="3" placeholder="Adresinizi girin..."></textarea>
+
+          <button id="checkoutBtn" class="primary">Ödeme Yap</button>
+          <button style="margin-top: 10px;" onclick="window.location.href= 'doors.html'" class="primary">Alışverişe Devam Et</button>
+
+          <p id="msg" class="msg"></p>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2025 Arda Çelik Kapı</p>
+    </div>
+  </footer>
+  
+
+  <script>
+    // Dark mode toggle (aynı mantık)
+    const bodyEl = document.querySelector('body');
+    const moonIcon = document.getElementById("fa-moon");
+    if(localStorage.getItem('darkMode') === 'true') bodyEl.classList.add('dark');
+    moonIcon.addEventListener('click', () => {
+      bodyEl.classList.toggle('dark');
+      localStorage.setItem('darkMode', bodyEl.classList.contains('dark'));
+    });
+  </script>
+
+  
+
+  <script>
+function getCart(){ return JSON.parse(localStorage.getItem('cart') || '[]'); }
+
+const itemsList = document.getElementById('itemsList');
+const summaryCount = document.getElementById('summaryCount');
+const summaryTotal = document.getElementById('summaryTotal');
+
+function renderCart(){
+  const cart = getCart();
+  itemsList.innerHTML = '';
+
+  if(cart.length === 0){
+    itemsList.innerHTML = '<p>Sepetiniz boş.</p>';
+    summaryCount.innerText = 0;
+    summaryTotal.innerText = '₺0';
+    return;
+  }
+
+  cart.forEach(it=>{
+    const el = document.createElement('div');
+    el.className = 'cart-row';
+    el.innerHTML = `
+      <img src="${it.img}" alt="${it.title}">
+      <div class="meta">
+        <h4>${it.title}</h4>
+        <p>Fiyat: ₺${it.price.toLocaleString()}</p>
+        <div class="qty">
+          <button class="dec" data-id="${it.id}">-</button>
+          <span>${it.qty}</span>
+          <button class="inc" data-id="${it.id}">+</button>
+        </div>
+      </div>
+      <div class="row-right">
+        <p>₺${(it.price*it.qty).toLocaleString()}</p>
+        <button class="remove" data-id="${it.id}">Sil</button>
+      </div>
+    `;
+    itemsList.appendChild(el);
+  });
+
+  updateSummary();
+  attachRowEvents();
+}
+
+function updateSummary(){
+  const cart = getCart();
+  const count = cart.reduce((s,i)=>s+i.qty,0);
+  const total = cart.reduce((s,i)=>s+i.qty*i.price,0);
+  summaryCount.innerText = count;
+  summaryTotal.innerText = `₺${total.toLocaleString()}`;
+}
+
+function attachRowEvents(){
+  document.querySelectorAll('.inc').forEach(btn=>{
+    btn.onclick = ()=> modifyQty(btn.dataset.id, +1);
+  });
+  document.querySelectorAll('.dec').forEach(btn=>{
+    btn.onclick = ()=> modifyQty(btn.dataset.id, -1);
+  });
+  document.querySelectorAll('.remove').forEach(btn=>{
+    btn.onclick = ()=>{
+      const newCart = getCart().filter(x=>x.id!==btn.dataset.id);
+      localStorage.setItem('cart', JSON.stringify(newCart));
+      renderCart();
+    };
+  });
+}
+
+function modifyQty(id, delta){
+  const cart = getCart();
+  const idx = cart.findIndex(x=>x.id===id);
+  if(idx===-1) return;
+  cart[idx].qty = Math.max(1, cart[idx].qty + delta);
+  localStorage.setItem('cart', JSON.stringify(cart));
+  renderCart();
+}
+
+renderCart();
+</script>
+
+
+
+  <!-- PayPal SDK (sandbox veya canlı client-id ile) - alternatif -->
+  <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=TRY"></script>
+  <script>
+    // Buraya PayPal createOrder çağrısı konulur; sunucu tarafındaki /create-paypal-order endpoint'ini çağırmak iyi.
+    // Örnek entegrasyon PayPal docs'ta var. (Doküman referansı: PayPal Orders API). :contentReference[oaicite:1]{index=1}
+  </script>
+
+  <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDw1ibYg2xGcbF1azF09JUSYMnfhQDySHg",
+            authDomain: "ardacelikkapi-adcfb.firebaseapp.com",
+            projectId: "ardacelikkapi-adcfb",
+            storageBucket: "ardacelikkapi-adcfb.firebasestorage.app",
+            messagingSenderId: "436173086063",
+            appId: "1:436173086063:web:45b125b911b4a168a8dc9a",
+            measurementId: "G-YRFLQJW6EP"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        onAuthStateChanged(auth, async (user) => {
+    if(user){
+        const docRef = doc(db, "users", user.uid);
+        const docSnap = await getDoc(docRef);
+
+        if(docSnap.exists()){
+            const userData = docSnap.data();
+
+            // Navbar
+            document.getElementById("usernameDisplay").innerText = userData.username || "Unknown";
+
+            // Showcase
+            const showUsername = document.getElementById("showUsername");
+            if(showUsername){
+                showUsername.innerText = userData.username || "Kullanıcı";
+            }
+        } else {
+            console.log("Firestore'da kullanıcı bilgisi yok!");
+        }
+    } else {
+        console.log("Kullanıcı giriş yapmamış!");
+        // window.location.href = "index.html";
+    }
+});
+
+
+
+
+    </script>
+
+  
+</body>
+</html>

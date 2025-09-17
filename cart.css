@@ -1,0 +1,91 @@
+/* cart.css — tema ile uyumlu */
+.cart-wrap { padding: 2rem 0; }
+.cart-grid { display: grid; grid-template-columns: 1fr 360px; gap: 2rem; align-items: start; }
+.cart-items { background: var(--primary_bg); padding: 1rem; border-radius:12px; box-shadow:0 8px 20px rgba(0,0,0,0.06); }
+.cart-row { display:flex; gap:1rem; padding: 1rem 0; border-bottom:1px solid #eee; align-items:center; }
+.cart-row img { width:120px; height:80px; object-fit:cover; border-radius:8px; }
+.meta h4 { margin-bottom:6px; color:var(--color); }
+.qty { display:flex; gap:8px; align-items:center; margin-top:8px; }
+.qty button { padding:6px 10px; border-radius:8px; border:none; cursor:pointer; background:var(--accent); color:var(--primary_bg); }
+.row-right { margin-left:auto; text-align:right; }
+.cart-summary { background:var(--primary_bg); padding:1rem; border-radius:12px; box-shadow:0 8px 20px rgba(0,0,0,0.06); }
+.primary { display:block; width:100%; padding:0.8rem; border-radius:50px; background:var(--accent); color:var(--primary_bg); border:none; cursor:pointer; font-weight:700; }
+.msg { margin-top:0.6rem; color:#c0392b; font-weight:600; }
+@media (max-width:900px){
+  .cart-grid { grid-template-columns: 1fr; }
+}
+
+#address {
+    width: 100%;
+    max-width: 100%;
+    height: 100px;       /* Sabit yükseklik */
+    padding: 0.8rem;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    resize: none;        /* Boyut değiştirilemez */
+    background: var(--primary_bg);
+    color: var(--color);
+    transition: border 0.3s, background 0.3s;
+}
+
+#address:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 5px rgba(52,152,219,0.5);
+}
+
+.dark #address {
+    background: #1a1a1a;
+    color: #fff;
+    border: 1px solid #555;
+}
+
+.cart-row .remove {
+  background-color: #ff4d4f; /* kırmızı ton */
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s ease;
+}
+
+.cart-row .remove:hover {
+  background-color: #ff7875; /* hover efekti */
+  transform: scale(1.05);
+}
+
+/* Miktar arttır/azalt butonları */
+.qty button {
+  padding:6px 10px;
+  border-radius:8px;
+  border:none;
+  cursor:pointer;
+  background:var(--accent);
+  color:var(--primary_bg);
+  font-weight:600;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.qty button:hover {
+  transform: scale(1.1);
+  opacity: 0.9;
+}
+
+/* Checkout / primary button hover */
+.primary:hover {
+  transform: scale(1.03);
+  opacity: 0.95;
+}
+
+/* Sil butonu zaten sen ekledin, hover ile ufak büyüme ve renk değişimi var */
+.cart-row .remove:hover {
+  background-color: #ff7875;
+  transform: scale(1.05);
+}
+
+
+
+
